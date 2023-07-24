@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      text-align: center; /* Center align all content in the body */
+    }
+
+    #createdBy {
+      position: fixed;
+      bottom: 20px; /* Adjust the distance from the bottom of the page */
+      left: 0;
+      right: 0;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+</head>
+<body>
+
+<h1>Functions & Validation</h1>
+
+<form id="form1" action="#" onsubmit="return validateForm(this);">
+  first name: <input type="text" name="firstname"><br>
+  last name: <input type="text" name="lastname"><br>
+  password: <input type="password" name="password"><br>
+
+  <button>Check</button>
+</form>
+
+<hr>
+<div id="message"></div>
+
+<div id="createdBy">Created by Alexandre Correia, 2023</div> <!-- Added the text and assigned an ID -->
+
+<script>
+// Validate password function
+const validatePassword = (password) => {
+  // Valid passwords should have at least 8 characters, at least one uppercase letter, and at least one lowercase letter
+  return password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password);
+};
+
+const validateForm = (myForm) => {
+  const firstname = myForm.firstname.value.trim(); // Added .trim() to remove leading and trailing whitespaces
+  const lastname = myForm.lastname.value.trim(); // Added .trim() to remove leading and trailing whitespaces
+  const password = myForm.password.value;
+
+  if (firstname === "" || lastname === "") {
+    $("#message").html("Please enter both first name and last name.");
+  } else if (!validatePassword(password)) {
+    $("#message").html("Invalid password. Password should have at least 8 characters, at least one uppercase letter, and at least one lowercase letter.");
+  } else {
+    $("#message").html("All form entries are valid.");
+  }
+
+  return false; // prevent page reload
+};
+</script>
+
+</body>
+</html>
