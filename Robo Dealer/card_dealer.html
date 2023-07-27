@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  <style>
+    body {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Robo Dealer</h1>
+
+<button onclick="dealHand();">Deal Hand</button>
+
+<hr>
+<div id="card_hand"></div>
+
+<div id="created_by">Created by Alexandre Correia, 2023</div>
+
+<script>
+
+// Card object with 'value' and 'suit' properties
+class Card {
+  constructor(value, suit) {
+    this.value = value;
+    this.suit = suit;
+  }
+
+  // Method to get the name of the card
+  getName() {
+    const cardNames = {
+      1: 'Ace',
+      11: 'Jack',
+      12: 'Queen',
+      13: 'King',
+    };
+    return cardNames[this.value] || this.value;
+  }
+}
+
+// Function to create a deck of 52 cards
+const createDeck = () => {
+  const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+  const deck = [];
+
+  for (let suit of suits) {
+    for (let value = 1; value <= 13; value++) {
+      deck.push(new Card(value, suit));
+    }
+  }
+
+  return deck;
+};
+
+// Global variable to hold the deck
+let deck = createDeck();
+
+// Function to shuffle the deck using Fisher-Yates algorithm
+const shuffleDeck = () => {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+};
+
+// Function to deal a hand of 5 cards
+const dealHand = () => {
+  if (deck.length < 5) {
+    alert("Not enough cards in the deck to deal a hand!");
+    return;
+  }
+
+  shuffleDeck();
+  const hand = deck.slice(0, 5);
+  deck = deck.slice(5); // Remove the dealt cards from the deck
+  const card_hand = document.getElementById("card_hand");
+
+  // Clear the currently-displayed hand before displaying a new hand
+  card_hand.innerHTML = '';
+
+  // Display information about the selected cards on the containing HTML page
+  for (let card of hand) {
+    const cardName = card.getName();
+    const cardInfo = document.createElement("p");
+    cardInfo.textContent = `${cardName} of ${card.suit.charAt(0).toUpperCase() + card.suit.slice(1)}`;
+    card_hand.appendChild(cardInfo);
+  }
+
+  return false; // prevent page reload
+};
+
+</script>
+
+</body>
+</html>
