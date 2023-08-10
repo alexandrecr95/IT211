@@ -1,0 +1,76 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        .over {
+            background-color: orange;
+        }
+        .selected {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <div id="buttons"></div>
+    <table border='1'>
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>role</th>
+                <th>house</th>
+                <th>gender</th>
+                <th>alignment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be appended here -->
+        </tbody>
+    </table>
+    <button>reset</button>
+
+    <script>
+        var characters = [
+            {name:"Albus Dumbledore", role:"staff", house:"Gryffindor",gender:"m",alignment:"good"},
+            {name:"Harry Potter", role:"student", house:"Gryffindor",gender:"m",alignment:"good"},
+            {name:"Cedric Diggory", role:"student", house:"Hufflepuff",gender:"m",alignment:"good"},
+            {name:"Cho Chang", role:"student", house:"Ravenclaw",gender:"f",alignment:"good"},
+            {name:"Horace Slughorn", role:"staff", house:"Slytherin",gender:"m",alignment:"good"}
+        ];
+
+        $(document).ready(function(){
+            var uniqueHouses = [];
+            
+            characters.forEach(function(character){
+                $("table tbody").append(
+                    '<tr>'+
+                    '<td>'+ character.name +'</td>'+
+                    '<td>'+ character.role +'</td>'+
+                    '<td>'+ character.house +'</td>'+
+                    '<td>'+ character.gender +'</td>'+
+                    '<td>'+ character.alignment +'</td>'+
+                    '</tr>'
+                );
+                if(character.house && uniqueHouses.indexOf(character.house) === -1){
+                    uniqueHouses.push(character.house);
+                }
+            });
+            
+            uniqueHouses.forEach(function(house){
+                $("#buttons").append('<button class="house-button" data-house="'+ house +'">'+ house +'</button>');
+            });
+
+            $(".house-button").click(function(){
+                var selectedHouse = $(this).data('house');
+                $("table tbody tr").hide();
+                $("table tbody tr").filter(function(){
+                    return $(this).find('td:nth-child(3)').text() === selectedHouse;
+                }).show();
+            });
+            
+            $("button:contains('reset')").click(function(){
+                $("table tbody tr").show();
+            });
+        });
+    </script>
+</body>
+</html>
